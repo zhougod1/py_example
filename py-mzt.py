@@ -11,7 +11,6 @@ import time
 class ThreadPool():
     # 线程池管理器
     def __init__(self, thread_num):
-        # 初始化参数
         self.work_queue = Queue.Queue()
         self.thread_num = thread_num
         self.__init_threading_pool(self.thread_num)
@@ -28,7 +27,7 @@ class ThreadPool():
 
 
 class Thread(threading.Thread):
-    # 定义线程类，继承threading.Thread
+    # 重写thread
     def __init__(self, work_queue):
         threading.Thread.__init__(self)
         self.work_queue = work_queue
@@ -36,7 +35,6 @@ class Thread(threading.Thread):
         # self.daemon = True
 
     def run(self):
-        # 启动线程
         while True:
             time.sleep(2)
             target, args = self.work_queue.get()
@@ -87,6 +85,7 @@ def next_page(url, index, filePath):
 
 def theme_to_page(a):
     name = a.contents[0]['alt']
+    # 当前写死路径到时候使用input提供手动输入路劲
     base_path = "d:\\download\\crawler\\" + name
 
     if name != '':
