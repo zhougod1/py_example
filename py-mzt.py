@@ -1,9 +1,46 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 from bs4 import BeautifulSoup
-import threading
+from Queue import Queue
+from threading import Thread
 import requests
 import os
+
+
+class ThreadPool():
+    # 线程池管理器
+    def __init__(self, thread_num):
+        # 初始化参数
+        self.work_queue = Queue()
+        self.thread_num = thread_num
+        self.__init_threading_pool(self.thread_num)
+
+    def __init_threading_pool(self, thread_num):
+        # 初始化线程池，创建指定数量的线程池
+        for i in range(thread_num):
+            thread = ThreadManger(self.work_queue)
+            thread.start()
+
+    def add_job(self, func, *args):
+        # 将任务放入队列，等待线程池阻塞读取，参数是被执行的函数和函数的参数
+        self.work_queue.put((func, args))
+
+
+class ThreadManger(Thread):
+    # 定义线程类，继承threading.Thread
+    def __init__(self, work_queue):
+        Thread.__init__(self)
+        self.work_queue = work_queue
+        # 线程守护使用上要注意主线程所在（next_net_page这个方法是递归翻页所以在第一次递归就结束了，在此就不开启线程守护）
+        # self.daemon = True
+
+    def run(self):
+        # 启动线程
+        while True:
+            target, args = self.work_queue.get()
+            target(*args)
+            self.work_queue.task_done()
+
 
 # python规定所有在赋值语句左面的变量都是局部变量（闭包规则）
 # def a():
@@ -27,7 +64,7 @@ def dowload_img(filePath, url):
     path = filePath + os.sep + name + suffix
     if ir.status_code == 200:
         print u"下载成功"
-        open(path, 'wb').write(ir.content).close()
+        open(path, 'wb').write(ir.content)
 
 
 # 每页请求成功后自动累加，实现翻页功能，直到请求不到网页（后期加入多线程提高效率）
@@ -53,21 +90,27 @@ def theme_to_page(a):
             try:
                 os.makedirs(base_path)
             except (IOError, OSError) as exception:
-                pass
+                print exception
         next_page(a['href'], 0, base_path)
 
 
-response = requests.post("https://www.mzitu.com/tag/ugirls/")
-html = response.content
-soup = BeautifulSoup(html, 'lxml')
-all_a = soup.select('.postlist ul li>a')
-threads = []
+def next_net_page(i=0):
+    url = "https://www.mzitu.com/tag/ugirls/"
+    if i > 0:
+        url = "https://www.mzitu.com/tag/ugirls/page/%s/" % (i)
 
-for a in all_a:
-    # args: 线程执行方法接收的参数，该属性是一个元组，如果只有一个参数也需要在末尾加逗号。
-    t = threading.Thread(target=theme_to_page, args=(a,))
-    threads.append(t)
-    t.start()
+    response = requests.post(url=url)
+    if response.status_code == 200:
+        html = response.content
+        soup = BeautifulSoup(html, 'lxml')
+        all_a = soup.select('.postlist ul li>a')
 
-for t in threads:
-    t.join()
+        for a in all_a:
+            # args: 线程执行方法接收的参数，该属性是一个元组，如果只有一个参数也需要在末尾加逗号。
+            thread_pool.add_job(theme_to_page, *(a,))
+
+        next_net_page(i + 1)
+
+
+thread_pool = ThreadPool(4)
+next_net_page()
