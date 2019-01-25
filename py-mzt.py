@@ -1,24 +1,25 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 from bs4 import BeautifulSoup
-from Queue import Queue
-from threading import Thread
+import Queue
+import threading
 import requests
 import os
+import time
 
 
 class ThreadPool():
     # 线程池管理器
     def __init__(self, thread_num):
         # 初始化参数
-        self.work_queue = Queue()
+        self.work_queue = Queue.Queue()
         self.thread_num = thread_num
         self.__init_threading_pool(self.thread_num)
 
     def __init_threading_pool(self, thread_num):
         # 初始化线程池，创建指定数量的线程池
         for i in range(thread_num):
-            thread = ThreadManger(self.work_queue)
+            thread = Thread(self.work_queue)
             thread.start()
 
     def add_job(self, func, *args):
@@ -26,10 +27,10 @@ class ThreadPool():
         self.work_queue.put((func, args))
 
 
-class ThreadManger(Thread):
+class Thread(threading.Thread):
     # 定义线程类，继承threading.Thread
     def __init__(self, work_queue):
-        Thread.__init__(self)
+        threading.Thread.__init__(self)
         self.work_queue = work_queue
         # 线程守护使用上要注意主线程所在（next_net_page这个方法是递归翻页所以在第一次递归就结束了，在此就不开启线程守护）
         # self.daemon = True
@@ -37,6 +38,7 @@ class ThreadManger(Thread):
     def run(self):
         # 启动线程
         while True:
+            time.sleep(2)
             target, args = self.work_queue.get()
             target(*args)
             self.work_queue.task_done()
@@ -63,7 +65,9 @@ def dowload_img(filePath, url):
     suffix = os.path.splitext(url)[1]
     path = filePath + os.sep + name + suffix
     if ir.status_code == 200:
-        print u"下载成功"
+        # print u"下载成功"
+        count[0] = count[0] + 1
+        print count[0]
         open(path, 'wb').write(ir.content)
 
 
@@ -104,13 +108,13 @@ def next_net_page(i=0):
         html = response.content
         soup = BeautifulSoup(html, 'lxml')
         all_a = soup.select('.postlist ul li>a')
-
+        next_net_page(i + 1)
         for a in all_a:
             # args: 线程执行方法接收的参数，该属性是一个元组，如果只有一个参数也需要在末尾加逗号。
             thread_pool.add_job(theme_to_page, *(a,))
 
-        next_net_page(i + 1)
 
-
-thread_pool = ThreadPool(4)
+thread_pool = ThreadPool(50)
+count = []
+count.append(0)
 next_net_page()
