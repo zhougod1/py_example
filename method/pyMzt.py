@@ -112,8 +112,8 @@ def next_net_page(i=0):
             # args: 线程执行方法接收的参数，该属性是一个元组，如果只有一个参数也需要在末尾加逗号。
             thread_pool.add_job(theme_to_page, *(a,))
 
-
-thread_pool = ThreadPool(50)
-count = []
-count.append(0)
-next_net_page()
+def init():
+    thread_pool = ThreadPool(50)
+    count = []
+    count.append(0)
+    next_net_page()
