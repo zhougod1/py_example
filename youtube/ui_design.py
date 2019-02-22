@@ -17,13 +17,14 @@ class EmittingStream(QtCore.QObject):
     def isatty(self):
         pass
     def flush(self):
-        QApplication.processEvents()
+        # QApplication.processEvents()
         pass
 
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(650, 501)
+        Form.setFixedSize(650, 501)
+        Form.setWindowIcon(QtGui.QIcon('./youtube.png'))
         self.ExtractBtn = QtWidgets.QPushButton(Form)
         self.ExtractBtn.setGeometry(QtCore.QRect(528, 38, 115, 31))
         self.ExtractBtn.setFocusPolicy(QtCore.Qt.TabFocus)
@@ -86,6 +87,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "youtube下载"))
+        Form.setWindowIcon(QtGui.QIcon('youtube.ico'))
         self.ExtractBtn.setText(_translate("Form", "获取资源"))
         self.DownloadBtn.setText(_translate("Form", "下载"))
         self.AddrLbl.setText(_translate("Form", "地址:"))

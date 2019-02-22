@@ -2,6 +2,7 @@ from ui_design import Ui_Form
 from PyQt5 import QtWidgets, QtCore, QtGui
 import sys
 import method
+import threading
 
 
 # main window class
@@ -18,11 +19,8 @@ class MyWindow(Ui_Form, QtWidgets.QWidget):
             '文件大小'
         ])  # set H label
 
-        self.ExtractBtn.clicked.connect(self.showinfo)
-        self.DownloadBtn.clicked.connect(self.download)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("favicon-vfl8qSV2F.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.setWindowIcon(icon)
+        self.ExtractBtn.clicked.connect(self.threadShow)
+        self.DownloadBtn.clicked.connect(self.threadDown)
         self.show()
 
     # function that display output at the textBrowser
@@ -45,6 +43,11 @@ class MyWindow(Ui_Form, QtWidgets.QWidget):
         except Exception as e:
             pass
 
+    def threadShow(self):
+        return threading.Thread(target=self.showinfo).start()
+        
+    def threadDown(self):
+        return threading.Thread(target=self.download).start()
 # youtube-dl uses logger to redirect output
 # class MyLogger():
 #     def debug(self, msg, w):
