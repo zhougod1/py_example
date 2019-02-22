@@ -1,24 +1,26 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui_design.ui'
-#
-# Created by: PyQt5 UI code generator 5.10.1
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication
 import sys
 
+
 class EmittingStream(QtCore.QObject):  
-    textWritten = QtCore.pyqtSignal(str)  #定义一个发送str的信号
+
+    # 定义一个发送str的信号
+    textWritten = QtCore.pyqtSignal(str)  
+
     def write(self, text):
         self.textWritten.emit(str(text))  
+
     def isatty(self):
         pass
+
     def flush(self):
+        # 未引入异步线程的时候，网络会堵塞pyqt界面更新，需要手动刷新
         # QApplication.processEvents()
         pass
+
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -29,22 +31,28 @@ class Ui_Form(object):
         self.ExtractBtn.setGeometry(QtCore.QRect(528, 38, 115, 31))
         self.ExtractBtn.setFocusPolicy(QtCore.Qt.TabFocus)
         self.ExtractBtn.setObjectName("ExtractBtn")
+
         self.DownloadBtn = QtWidgets.QPushButton(Form)
         self.DownloadBtn.setGeometry(QtCore.QRect(534, 354, 113, 32))
         self.DownloadBtn.setObjectName("DownloadBtn")
+
         self.AddrEdit = QtWidgets.QLineEdit(Form)
         self.AddrEdit.setGeometry(QtCore.QRect(50, 44, 471, 21))
         self.AddrEdit.setObjectName("AddrEdit")
+
         self.AddrLbl = QtWidgets.QLabel(Form)
         self.AddrLbl.setGeometry(QtCore.QRect(10, 47, 54, 16))
         self.AddrLbl.setObjectName("AddrLbl")
+
         self.PxyEdit = QtWidgets.QLineEdit(Form)
         self.PxyEdit.setGeometry(QtCore.QRect(50, 14, 111, 21))
         self.PxyEdit.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.PxyEdit.setObjectName("PxyEdit")
+
         self.ProxyLbl = QtWidgets.QLabel(Form)
         self.ProxyLbl.setGeometry(QtCore.QRect(10, 17, 41, 16))
         self.ProxyLbl.setObjectName("ProxyLbl")
+
         self.tableWidget = QtWidgets.QTableWidget(Form)
         self.tableWidget.setGeometry(QtCore.QRect(10, 80, 631, 271))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
@@ -62,13 +70,16 @@ class Ui_Form(object):
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.horizontalHeader().setDefaultSectionSize(126)
         self.tableWidget.verticalHeader().setVisible(False)
+
         self.shellWidget = QtWidgets.QTextEdit(Form)
         self.shellWidget.setGeometry(QtCore.QRect(10, 390, 631, 101))
         self.shellWidget.setObjectName("shellWidget")
         self.shellWidget.setReadOnly(True)
+
         self.SeleLbl = QtWidgets.QLabel(Form)
         self.SeleLbl.setGeometry(QtCore.QRect(10, 363, 250, 16))
         self.SeleLbl.setObjectName("SeleLbl")
+        
         self.SeleEdit = QtWidgets.QLineEdit(Form)
         self.SeleEdit.setGeometry(QtCore.QRect(255, 360, 111, 21))
         self.SeleEdit.setFocusPolicy(QtCore.Qt.ClickFocus)

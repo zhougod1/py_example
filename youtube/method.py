@@ -10,7 +10,7 @@ ydl = youtube_dl.YoutubeDL(ydl_opts)
 video = {}
 
 # 'https://www.youtube.com/watch?v=gOLlY7SV6gE'
-def RetrieveInfo(w):         # retrieve video information
+def RetrieveInfo(w):
     global video, ydl, proxy
     proxy = w.PxyEdit.text()
     url = w.AddrEdit.text()
