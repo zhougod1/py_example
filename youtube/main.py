@@ -4,8 +4,8 @@ import sys
 import method
 import threading
 
-# 在Python 2.x 版本中，默认类都是旧式类，除非顶层显式继承object。
-# 在Python 3.x 版本中，默认类就是新式类，无需显示继承object。
+# 在Python 2.x 版本中，默认类都是旧式类，除非顶层显式继承object。经典类
+# 在Python 3.x 版本中，默认类就是新式类，无需显示继承object。新式类
 
 
 class MyWindow(Ui_Form, QtWidgets.QWidget):
