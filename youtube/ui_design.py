@@ -86,13 +86,13 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "youtube下载"))
+        Form.setWindowTitle(_translate("Form", "Easy Download"))
         Form.setWindowIcon(QtGui.QIcon('youtube.ico'))
         self.ExtractBtn.setText(_translate("Form", "获取资源"))
         self.DownloadBtn.setText(_translate("Form", "下载"))
         self.AddrLbl.setText(_translate("Form", "地址:"))
-        self.PxyEdit.setText(_translate("Form", "127.0.0.1:1080"))
-        self.AddrEdit.setText(_translate("Form", "https://www.youtube.com/watch?v=eiIKMjDqm9c"))
+        self.PxyEdit.setText(_translate("Form", "127.0.0.1:"))
+        self.AddrEdit.setText(_translate("Form", "https://"))
         self.ProxyLbl.setText(_translate("Form", "代理:"))
         self.SeleLbl.setText(_translate("Form", "选择需要的Format code(video + audio):"))
 
