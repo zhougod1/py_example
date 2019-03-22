@@ -1,0 +1,17 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+pyqt5 = "*"
+youtube-dl = "*"
+pyinstaller = "*"
+opencv-python = "*"
+bs4 = "*"
+selenium = "*"
+
+[requires]
+python_version = "3.7"
