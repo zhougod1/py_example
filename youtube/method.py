@@ -23,7 +23,7 @@ def RetrieveInfo(w):
     ydl_opts = {'outtmpl': '%(title)s%(ext)s',
                 'proxy': proxy,
                 'socket_timeout': 20,
-                'prefer_ffmpeg': True,
+                'prefer_ffmpeg': True
                 # 'logger': MyLogger()
                 }
     ydl = youtube_dl.YoutubeDL(ydl_opts)

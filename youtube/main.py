@@ -30,7 +30,7 @@ class MyWindow(Ui_Form, QtWidgets.QWidget):
         method.FillInfo(self)
 
     def download(self):
-        method.ydl.params = {'format': self.SeleEdit.text()}
+        method.ydl.params = {'format': self.SeleEdit.text(),'keepvideo': True}
         try:
             method.ydl.process_video_result(method.video)
         except Exception as e:
