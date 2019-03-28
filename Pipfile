@@ -12,6 +12,7 @@ pyinstaller = "*"
 opencv-python = "*"
 bs4 = "*"
 selenium = "*"
+pytesseract = "*"
 
 [requires]
 python_version = "3.7"
